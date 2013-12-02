@@ -1,0 +1,3 @@
+[submodule "shooter"]
+	path = shooter
+	url = https://github.com/diRex/shooter
