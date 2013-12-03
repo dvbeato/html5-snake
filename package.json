@@ -1,0 +1,28 @@
+{
+  "name": "snake",
+  "version": "0.0.1",
+  "description": "HTML5 Snake Minigame",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diRex/html5-snake.git"
+  },
+  "keywords": [
+    "html5",
+    "snake",
+    "minigame",
+    "canvas",
+    "divecch",
+    "Diogo Vecchiati",
+    "Diogo Vecchiati Beato"
+  ],
+  "author": "Diogo Vecchiati - divecch",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/diRex/html5-snake/issues"
+  },
+  "homepage": "https://github.com/diRex/html5-snake"
+}

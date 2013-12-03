@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<meta charset="utf-8">
+	<title>Snake - Diogo Vecchiati</title>
+	<meta name="author" content="Diogo Vecchiati">
+	<meta name="description" content="HTML5 Snake Minigame">
+
+	<meta name="keywords" content="
+	diogo vecchiati, diogo vecchiati beato, direx, javascript, java, html5, snake, minigame, divecch">
+
+	<meta name="HandheldFriendly" content="True">
+  	<meta name="MobileOptimized" content="320">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	
+  	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+
+  	<link rel="canonical" href="http://divecch.com/labs/snake">
+  	<link rel="stylesheet" type="text/css" href="assets/styles/main.css">
+  	
+  	<script type="text/javascript" src="assets/scripts/game.js"></script>
+</head>
+<body>
+	<div id="fb-root"></div>
+	<script>
+		(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1&appId=656586814367245";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
+	<div id="notify">
+		<a href="">Start Game</a>
+	</div>
+	<div id="gameview">
+		<h1>Snake</h1>
+		<canvas id="gamerender"></canvas>
+
+		<div id="placar">
+			
+				<h4>score:<span id="score"></span></h4>
+
+			<div id="ranking">
+				
+			</div>			
+		</div>
+	</div>
+
+	<div class="fb-comments" data-href="http://divecch.com" data-numposts="5" data-colorscheme="light"></div>
+</body>
+</html>
