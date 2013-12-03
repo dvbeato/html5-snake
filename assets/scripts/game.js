@@ -7,7 +7,6 @@ function App() {
     var canvas, context;
     
     var snakeGame;
-    var currentPlayer;
 
     this.load = function() {
         
@@ -17,16 +16,36 @@ function App() {
         canvas.width  = WIDTH;
         canvas.height = HEIGHT;
         
-        currentPlayer = new Player();
-        snakeGame     = new SnakeGame(currentPlayer);
+        snakeGame = new SnakeGame();
 
         snakeGame.draw(context);
-      
+
+        var startButton = document.getElementById('startgame');
+        
+        
+        startButton.onclick = function() {
+
+            startButton.style.webkitAnimationDuration="0.2s";
+            
+            var notify = document.getElementById('notify');
+            
+            notify.style.webkitAnimationPlayState="running";
+            
+            setTimeout(function() {
+                startButton.style.webkitAnimationPlayState = "paused";
+            }, 1000);
+        }
     }
 
-    function SnakeGame(player) {
-        this.player = player;
+    function SnakeGame() {
+        
+        var player;
+        
         this.map = new MapTile(WIDTH, HEIGHT);
+
+        this.startGame = function() {
+            player = new Player();
+        }
 
         this.draw = function(canvas) {
             this.map.draw(canvas);
@@ -55,6 +74,9 @@ function App() {
             },
             normal: {
                 color:"#D1D1D1"
+            },
+            apple: {
+                color:"#555"
             }
         }
 
@@ -115,3 +137,6 @@ function App() {
 
 var app = new App();
 document.onreadystatechange = app.load;
+
+
+    
