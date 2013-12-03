@@ -33,6 +33,8 @@ function App() {
             
             setTimeout(function() {
                 startButton.style.webkitAnimationPlayState = "paused";
+                snakeGame.startGame();
+                snakeGame.draw(context);
             }, 1000);
         }
     }
@@ -40,15 +42,33 @@ function App() {
     function SnakeGame() {
         
         var player;
-        
+        var snake;
         this.map = new MapTile(WIDTH, HEIGHT);
 
         this.startGame = function() {
             player = new Player();
+            snake  = new Snake();
+            this.map.addElement(snake);
+            this.map.addRandomElement(new Apple());
         }
 
         this.draw = function(canvas) {
             this.map.draw(canvas);
+        }
+
+
+    }
+    function Apple() {
+        this.type = "apple";
+    }
+
+    function Snake() {
+        var direction;
+        var size = 3;
+        this.type = "snake";
+        this.position = {
+            row: 3,
+            col: 3
         }
     }
 
@@ -59,8 +79,6 @@ function App() {
             score = value;
             document.getElementById('score').innerHTML = score;
         }
-
-        this.setScore(0);
     }
 
     function MapTile (width, height) {
@@ -77,17 +95,28 @@ function App() {
             },
             apple: {
                 color:"#555"
+            },
+            snake :{
+                color:"#555"
             }
         }
 
         var rows = height / tile.size;
         var cols = width / tile.size;
-        var map  = new Matrix(rows, cols);
+        var matrix  = new Matrix(rows, cols);
+
+        this.addElement = function(element) {
+            matrix[element.position.row][element.position.col] = element.type;
+        }
+        
+        this.addRandomElement = function(element) { 
+            matrix[element.position.row][element.position.col] = element.type;
+        }
 
         this.draw = function (canvas) {
             eachTile(function (row, col) {
 
-                 canvas.fillStyle = tile[map[row][col]].color;
+                 canvas.fillStyle = tile[matrix[row][col]].color;
                  canvas.fillRect(
                     col*tile.size,row*tile.size ,
                     tile.size, tile.size);
