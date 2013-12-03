@@ -42,33 +42,29 @@ function App() {
     function SnakeGame() {
         
         var player;
-        var snake;
-        this.map = new MapTile(WIDTH, HEIGHT);
+        
+        var map = new MapTile(WIDTH, HEIGHT);
+
+        var snake = {
+            position:map.getRandomPosition(),
+            tag:"snake",
+            size: 3
+        };
+
+        var apple = {
+            position:map.getRandomPosition(),
+            tag:"apple"
+        }
 
         this.startGame = function() {
             player = new Player();
-            snake  = new Snake();
-            this.map.addElement(snake);
-            this.map.addRandomElement(new Apple());
+
+            map.addElement(snake);
+            map.addElement(apple);
         }
 
         this.draw = function(canvas) {
-            this.map.draw(canvas);
-        }
-
-
-    }
-    function Apple() {
-        this.type = "apple";
-    }
-
-    function Snake() {
-        var direction;
-        var size = 3;
-        this.type = "snake";
-        this.position = {
-            row: 3,
-            col: 3
+            map.draw(canvas);
         }
     }
 
@@ -94,7 +90,7 @@ function App() {
                 color:"#D1D1D1"
             },
             apple: {
-                color:"#555"
+                color:"#500"
             },
             snake :{
                 color:"#555"
@@ -104,25 +100,23 @@ function App() {
         var rows = height / tile.size;
         var cols = width / tile.size;
         var matrix  = new Matrix(rows, cols);
-
-        this.addElement = function(element) {
-            matrix[element.position.row][element.position.col] = element.type;
-        }
         
-        this.addRandomElement = function(element) { 
-            matrix[element.position.row][element.position.col] = element.type;
+        this.addElement = function(element) {
+            element.position = getRandomPosition();
+            matrix[element.position.row][element.position.col] = element.tag;
         }
 
         this.draw = function (canvas) {
             eachTile(function (row, col) {
 
-                 canvas.fillStyle = tile[matrix[row][col]].color;
-                 canvas.fillRect(
+                canvas.fillStyle = tile[matrix[row][col]].color;
+                canvas.fillRect(
                     col*tile.size,row*tile.size ,
                     tile.size, tile.size);
 
                 canvas.lineWidth   = tile.borderSize;
                 canvas.strokeStyle = tile.borderColor;
+
                 canvas.strokeRect(
                     col*tile.size,row*tile.size ,
                     tile.size, tile.size);  
@@ -131,11 +125,16 @@ function App() {
 
         function eachTile(callback) {
             for (var row = 0; row < rows; row++) {
-
                 for (var col = 0; col < cols; col++) {
-                    
                     callback(row, col);
                 };
+            };
+        }
+
+        this.getRandomPosition = function() {
+            return {
+                row: Math.floor((Math.random()*rows-2)+1),
+                col: Math.floor((Math.random()*cols-2)+1)
             };
         }
     }
