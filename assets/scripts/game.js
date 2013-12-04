@@ -34,37 +34,39 @@ function App() {
             setTimeout(function() {
                 startButton.style.webkitAnimationPlayState = "paused";
                 snakeGame.startGame();
-                snakeGame.draw(context);
             }, 1000);
         }
     }
 
     function SnakeGame() {
-        
+        var self = this;
         var player;
         
         var map = new MapTile(WIDTH, HEIGHT);
 
         var snake = {
-            position:map.getRandomPosition(),
             tag:"snake",
-            size: 3
+            size: 3, 
+            direction:{x:1, y:0}
         };
 
         var apple = {
-            position:map.getRandomPosition(),
             tag:"apple"
         }
 
         this.startGame = function() {
             player = new Player();
 
-            map.addElement(snake);
-            map.addElement(apple);
-        }
+            map.addElementRandomPosition(snake);
+            map.addElementRandomPosition(apple);
 
-        this.draw = function(canvas) {
-            map.draw(canvas);
+            setInterval(function() {    
+                map.updateSnakePosition(snake);
+                }, 100);
+        }
+        
+        this.draw = function() {
+            map.draw();
         }
     }
 
@@ -84,16 +86,35 @@ function App() {
             borderSize: 1,
             borderColor: "#aaa",
             solid: {
-                color: "#555"
+                color: "#555",
+                colides:true,
+                onColision:function() {
+                    //gameOver
+                }
             },
             normal: {
                 color:"#D1D1D1"
             },
             apple: {
-                color:"#500"
+                color:"#333",
+                colides:true
             },
             snake :{
-                color:"#555"
+                color:"#555",
+                colides: true
+            },
+            draw:function(row, col) {
+                context.fillStyle = tile[matrix[row][col]].color;
+                context.fillRect(
+                    col*tile.size,row*tile.size ,
+                    tile.size, tile.size);
+
+                context.lineWidth   = tile.borderSize;
+                context.strokeStyle = tile.borderColor;
+
+                context.strokeRect(
+                    col*tile.size,row*tile.size ,
+                    tile.size, tile.size);  
             }
         }
 
@@ -101,25 +122,36 @@ function App() {
         var cols = width / tile.size;
         var matrix  = new Matrix(rows, cols);
         
-        this.addElement = function(element) {
-            element.position = getRandomPosition();
+        this.addElementRandomPosition = function(element) {
+            element.position = this.getRandomPosition();
             matrix[element.position.row][element.position.col] = element.tag;
+            tile.draw(element.position.row, element.position.col);
         }
 
-        this.draw = function (canvas) {
+        this.updateSnakePosition = function(element) {
+
+            matrix[element.position.row][element.position.col] = "normal";
+
+            var nRow = element.position.row+element.direction.y;
+            var nCol = element.position.col+element.direction.x;
+            var nElm = tile[ matrix[nRow][nCol] ];
+
+            if(nElm.colides) {
+                nElm.onColision();
+            } 
+
+            matrix[nRow][nCol] = element.tag;
+
+            tile.draw(element.position.row, element.position.col);
+            tile.draw(nRow, nCol);
+
+            element.position.row = nRow;
+            element.position.col = nCol;
+        }
+
+        this.draw = function () {
             eachTile(function (row, col) {
-
-                canvas.fillStyle = tile[matrix[row][col]].color;
-                canvas.fillRect(
-                    col*tile.size,row*tile.size ,
-                    tile.size, tile.size);
-
-                canvas.lineWidth   = tile.borderSize;
-                canvas.strokeStyle = tile.borderColor;
-
-                canvas.strokeRect(
-                    col*tile.size,row*tile.size ,
-                    tile.size, tile.size);  
+                tile.draw(row,col);
             });
         }
 
@@ -133,8 +165,8 @@ function App() {
 
         this.getRandomPosition = function() {
             return {
-                row: Math.floor((Math.random()*rows-2)+1),
-                col: Math.floor((Math.random()*cols-2)+1)
+                row: Math.floor((Math.random() * (rows-2) )+1),
+                col: Math.floor((Math.random()*  (cols-2) )+1)
             };
         }
     }
