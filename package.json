@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/diRex/html5-snake/issues"
   },
-  "homepage": "https://github.com/diRex/html5-snake"
+  "homepage": "https://github.com/diRex/html5-snake",
+  "devDependencies": {
+    "jshint": "~2.3.0"
+  }
 }
