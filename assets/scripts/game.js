@@ -15,6 +15,7 @@ function App() {
             color:"#333",
             onColision:function() {
                 gameState.incrementScore(1);
+                gameState.speed -= 100;
             }
         },
         snake:{
@@ -41,6 +42,7 @@ function App() {
     var gameState = {
         player:{},
         score:0,
+        speed:1000,
         incrementScore: function(score) {
             this.score += score;
             document.getElementById('score').innerHTML = this.score;
@@ -79,20 +81,34 @@ function App() {
         }
     }
 
-    var KeyListener = {
+    var JoyPad = {
         
-        key: {},
+        directions : {
+            Right:{
+                x:1,
+                y:0
+            },
+            Left:{
+                x:-1,
+                y:0
+            },
+            Up:{
+                x:0,
+                y:-1
+            },
+            Down:{
+                x:0,
+                y:1
+            }
+        },
 
-        startListner: function() {
+        start: function() {
             window.addEventListener("keydown", function(e) {
-                KeyListener.key[e.which] = true;
-            });
-            window.addEventListener("keyup", function(e) {
-                delete(KeyListener.key[e.which]);
+                elements.snake.direction = JoyPad.directions[e.keyIdentifier];
             });
         },
 
-        stopListner: function() {
+        stop: function() {
             window.removeEventListner("keydown");
             window.removeEventListner("keyup");
         }
@@ -114,15 +130,13 @@ function App() {
             map.addElementRandomPosition(snake);
             map.addElementRandomPosition(apple);
             
-            KeyListener.startListner();
+            JoyPad.start();
 
-            gameLoop = setInterval(function() {    
-                snakeWalk();
-            }, 100);
+            snakeWalk();
         }
         
         this.gameOver = function() {
-            clearInterval(gameLoop);
+            JoyPad.stop();
             alert("Your Score:"+ gameState.score);
         }
 
@@ -144,7 +158,8 @@ function App() {
 
             map.clearPosition(currentPosition.row, currentPosition.col);
             map.redraw(currentPosition.row, currentPosition.col);
-            
+
+            setTimeout(snakeWalk, gameState.speed);
         }
 
         this.draw = function() {
