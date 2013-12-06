@@ -26,14 +26,14 @@ function App() {
                 y:1
             },
             onColision:function () {
-                
+                snakeGame.gameOver();
             }
         },
         brick:{
             tag:"brick",
             color:"#555",
             onColision: function () {
-
+                snakeGame.gameOver();
             }
         }
     }
@@ -117,18 +117,23 @@ function App() {
             KeyListener.startListner();
 
             gameLoop = setInterval(function() {    
-                update();
-            }, 33);
+                snakeWalk();
+            }, 100);
         }
         
-        function update() {
+        this.gameOver = function() {
+            clearInterval(gameLoop);
+            alert("Your Score:"+ gameState.score);
+        }
+
+        function snakeWalk() {
 
             var currentPosition = map.getPosition(snake);
 
             var nextRow = currentPosition.row + snake.direction.y;
             var nextCol = currentPosition.col + snake.direction.x;
             
-            var nextElement = map.getElement(nextRow, nextCol);
+            var nextElement = elements[map.getElement(nextRow, nextCol)];
 
             if(nextElement && nextElement.onColision) {
                 nextElement.onColision();
@@ -140,7 +145,6 @@ function App() {
             map.clearPosition(currentPosition.row, currentPosition.col);
             map.redraw(currentPosition.row, currentPosition.col);
             
-
         }
 
         this.draw = function() {
