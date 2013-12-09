@@ -3,7 +3,9 @@ function App() {
     
     var WIDTH = 500;
     var HEIGHT = 500;
-    
+    var RUNNING = 'running';
+    var STOPED  = 'stoped';
+
     var canvas, context;
     
     var snakeGame;
@@ -14,18 +16,17 @@ function App() {
             tag:"apple",
             color:"#333",
             onColision:function() {
-                gameState.incrementScore(1);
-                gameState.speed -= 100;
+                snakeGame.caugthApple();
             }
         },
         snake:{
             tag:"snake",
             size:3,
-            color:"#555",
-            direction:{
-                x:0,
-                y:1
+            tail:{
+                distance:1,
             },
+            trail:[],
+            color:"#555",
             onColision:function () {
                 snakeGame.gameOver();
             }
@@ -40,9 +41,11 @@ function App() {
     }
 
     var gameState = {
+
         player:{},
         score:0,
-        speed:1000,
+        speed:500,
+        status:STOPED,
         incrementScore: function(score) {
             this.score += score;
             document.getElementById('score').innerHTML = this.score;
@@ -109,8 +112,8 @@ function App() {
         },
 
         stop: function() {
-            window.removeEventListner("keydown");
-            window.removeEventListner("keyup");
+            window.removeEventListener("keydown");
+            window.removeEventListener("keyup");
         }
     }
 
@@ -126,21 +129,34 @@ function App() {
         var apple = elements.apple;
 
         this.startGame = function() {
+            gameState.status = RUNNING;
 
             map.addElementRandomPosition(snake);
             map.addElementRandomPosition(apple);
             
             JoyPad.start();
+            snake.direction = JoyPad.directions.Down;
 
             snakeWalk();
         }
         
         this.gameOver = function() {
+            gameState.status = STOPED;
+
             JoyPad.stop();
+            
             alert("Your Score:"+ gameState.score);
         }
 
+        this.caugthApple = function() {
+            snake.size += 1;
+            gameState.incrementScore(1);
+            map.addElementRandomPosition(apple);
+        }
+
         function snakeWalk() {
+
+            if(gameState.status != RUNNING) return;
 
             var currentPosition = map.getPosition(snake);
 
@@ -152,13 +168,16 @@ function App() {
             if(nextElement && nextElement.onColision) {
                 nextElement.onColision();
             } 
+            
+            snake.trail.push(currentPosition); 
+            
+            if(snake.trail.length >= snake.size) {
+                map.clearPosition(snake.trail[0].row, snake.trail[0].col);
+                snake.trail = snake.trail.slice(1);
+            } 
 
             map.addElement(snake, {row:nextRow, col:nextCol } );
-            map.redraw(nextRow, nextCol);
-
-            map.clearPosition(currentPosition.row, currentPosition.col);
-            map.redraw(currentPosition.row, currentPosition.col);
-
+            
             setTimeout(snakeWalk, gameState.speed);
         }
 
@@ -207,7 +226,8 @@ function App() {
 
         this.addElement = function(element, position) {
             matrix[position.row][position.col] = element.tag;
-            elementsPosition[element.tag] = {position:position};
+            elementsPosition[element.tag] = {position:position};            
+            tile.draw(position.row, position.col);
         }
         
         this.getElement = function(row, col) {
@@ -216,22 +236,17 @@ function App() {
 
         this.addElementRandomPosition = function(element) {
             var randomPosition = matrix.getRandomPosition();
-            self.addElement(element, randomPosition);
-            tile.draw(randomPosition.row, randomPosition.col);
-        }
+            self.addElement(element, randomPosition);        }
 
         this.clearPosition = function(row, col) {
             delete(matrix[row][col]);
+            tile.draw(row, col);
         }
 
         this.draw = function () {
             matrix.forEach(function (row, col) {
                 tile.draw(row,col);
             });
-        }
-        
-        this.redraw = function(row, col) {
-            tile.draw(row, col);
         }
 
         function populateMatrix() {
