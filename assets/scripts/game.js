@@ -3,6 +3,7 @@ function App() {
     
     var WIDTH = 500;
     var HEIGHT = 500;
+
     var RUNNING = 'running';
     var STOPED  = 'stoped';
 
@@ -22,9 +23,6 @@ function App() {
         snake:{
             tag:"snake",
             size:3,
-            tail:{
-                distance:1,
-            },
             trail:[],
             color:"#555",
             onColision:function () {
@@ -121,6 +119,16 @@ function App() {
 
         var self = this;
 
+        var gameState = {
+            player:{},
+            score:0,
+            speed:500,
+            incrementScore: function(score) {
+                this.score += score;
+                document.getElementById('score').innerHTML = this.score;
+            }
+        }
+
         var gameLoop;
 
         var map = new Map(WIDTH, HEIGHT);
@@ -151,6 +159,7 @@ function App() {
         this.caugthApple = function() {
             snake.size += 1;
             gameState.incrementScore(1);
+            gameState.speed = ( (gameState.speed - 20) <= 40) ? 40 : (gameState.speed - 20);
             map.addElementRandomPosition(apple);
         }
 
@@ -177,7 +186,7 @@ function App() {
             } 
 
             map.addElement(snake, {row:nextRow, col:nextCol } );
-            
+
             setTimeout(snakeWalk, gameState.speed);
         }
 
@@ -226,7 +235,7 @@ function App() {
 
         this.addElement = function(element, position) {
             matrix[position.row][position.col] = element.tag;
-            elementsPosition[element.tag] = {position:position};            
+            elementsPosition[element.tag] = {position:position};
             tile.draw(position.row, position.col);
         }
         
@@ -236,7 +245,8 @@ function App() {
 
         this.addElementRandomPosition = function(element) {
             var randomPosition = matrix.getRandomPosition();
-            self.addElement(element, randomPosition);        }
+            self.addElement(element, randomPosition);
+        }
 
         this.clearPosition = function(row, col) {
             delete(matrix[row][col]);
