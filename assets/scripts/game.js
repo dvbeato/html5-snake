@@ -1,5 +1,5 @@
 
-function App() {
+var app = (function() {
     
     var WIDTH = 500;
     var HEIGHT = 500;
@@ -50,7 +50,7 @@ function App() {
         }
     }
 
-    this.load = function() {
+    function load() {
         
         canvas  = document.getElementById('gamerender');
         context = canvas.getContext('2d');
@@ -68,9 +68,9 @@ function App() {
 
             startButton.style.webkitAnimationDuration="0.2s";
             
-            var notify = document.getElementById('notify');
+            var menu = document.getElementById('menu');
             
-            notify.style.webkitAnimationPlayState="running";
+            menu.style.webkitAnimationPlayState="running";
             
             setTimeout(function() {
                 
@@ -80,6 +80,10 @@ function App() {
 
             }, 1000);
         }
+    }
+    
+    function restart() {
+        snakeGame.restart();
     }
 
     var JoyPad = {
@@ -148,12 +152,22 @@ function App() {
             snakeWalk();
         }
         
+        this.restart = function() {
+            gameState.incrementScore(-1);
+            gameState.speed = 500;
+            snake.size = 3;
+            map = new Map(WIDTH, HEIGHT);
+            map.draw();
+            notify.hidde();
+            this.startGame();
+        }
+
         this.gameOver = function() {
             gameState.status = STOPED;
 
             JoyPad.stop();
             
-            alert("Your Score:"+ gameState.score);
+            notify.show("Your Score:"+ gameState.score);
         }
 
         this.caugthApple = function() {
@@ -304,10 +318,56 @@ function App() {
 
         return matrix;
     }
-}
 
-var app = new App();
-document.onreadystatechange = app.load;
+    var notify = (function() {
+        var notify;
+        function create(message) {
+            var doc = document;
+            
+            notify = doc.querySelector('#notify');
+
+            var msg = doc.createElement("p");
+            msg.id = "message";
+            var restart = doc.createElement("button");
+            
+            restart.innerHTML = "Restart";
+            restart.onclick = app.restart;
+
+            msg.innerHTML = message;
+
+            notify.appendChild(msg);
+            notify.appendChild(restart);
+        }
+        
+        function show(message) {
+            
+            var msg = document.querySelector('#notify #message');
+            
+            if(msg) {
+                msg.innerHTML = message;
+            } else {
+                create(message);
+            }
+            
+            notify.style.display = "block";
+        }
+
+        function hidde() {
+
+            notify.style.display = "none";
+        }
+        return {
+            show:show,
+            hidde:hidde
+        }
+    })();
+
+    return {
+        load:load,
+        restart:restart
+    }
+
+})();
 
 
     

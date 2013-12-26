@@ -21,10 +21,10 @@ body {
 #gameview {
 	margin: 0 auto;
 	width: 500px;
-	height: 500px;
 	display: block;
 	text-align: center;
 }
+
 
 h1 {
 	font-weight: lighter;
@@ -62,7 +62,7 @@ h1 {
 	}
 }
 
-#notify {
+#menu {
 	position: absolute;
 	width: 100%;
 	text-align: center;
@@ -76,7 +76,7 @@ h1 {
 	-webkit-animation-fill-mode: forwards;
 }
 
-#notify a {
+#menu a {
 	color: #FFF;
 	text-decoration: none;
 	-webkit-animation-name: changeColor;
@@ -86,3 +86,25 @@ h1 {
 	-webkit-animation-iteration-count: infinite;
 }
 
+#notify {
+	position: absolute;
+	width: 500px;
+	display: none;
+	background: #d1d1d1;
+	border: 15px double #555;
+	margin: 0px -250px;
+	box-sizing: border-box;
+	left: 50%;
+	top: 200px;
+	z-index: 100;
+	padding: 10px;
+	text-align: center;
+}
+
+#notify button {
+	border: 3px solid #515151;
+	padding: 5px 10px;
+	font-family: inherit;
+	color: inherit;
+	cursor: pointer;
+}
