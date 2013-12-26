@@ -73,6 +73,7 @@ h1 {
 	padding: 10px 0px;
 	overflow: hidden;
 	-webkit-animation: tvOff 0.3s linear 1s paused;
+	
 	-webkit-animation-fill-mode: forwards;
 }
 

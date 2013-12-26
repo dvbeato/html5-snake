@@ -1,3 +1,61 @@
+var Snake = { modules:{} };
+
+Snake.modules.render = (function(){
+    var canvasContext;
+    var canvasElement;
+
+    function init(idCanvas, width, height) {
+        canvasElement  = document.getElementById(idCanvas);
+        canvasContext = canvasElement.getContext('2d');
+        
+        canvasElement.width  = width;
+        canvasElement.height = height;
+    } 
+
+    return {
+        init:init,
+        canvas:canvasContext
+    }   
+})();
+
+Snake.modules.joypad = (function(){
+   var directions = {
+            Right:{
+                x:1,
+                y:0
+            },
+            Left:{
+                x:-1,
+                y:0
+            },
+            Up:{
+                x:0,
+                y:-1
+            },
+            Down:{
+                x:0,
+                y:1
+            }
+    };
+    
+    function start(element) {
+        window.addEventListener("keydown", function(e) {
+            element.direction = directions[e.keyIdentifier];
+        });
+    }
+    
+    function stop() {
+        window.removeEventListener("keydown");
+        window.removeEventListener("keyup");
+    }
+    
+    return {
+        directions: directions,
+        startControll:start, 
+        stop: stop
+    }
+})();
+
 
 var app = (function() {
     
@@ -60,7 +118,7 @@ var app = (function() {
         
         snakeGame = new SnakeGame();
 
-        snakeGame.draw(context);
+        snakeGame.draw();
 
         var startButton = document.getElementById('startgame');
         
@@ -86,39 +144,7 @@ var app = (function() {
         snakeGame.restart();
     }
 
-    var JoyPad = {
-        
-        directions : {
-            Right:{
-                x:1,
-                y:0
-            },
-            Left:{
-                x:-1,
-                y:0
-            },
-            Up:{
-                x:0,
-                y:-1
-            },
-            Down:{
-                x:0,
-                y:1
-            }
-        },
-
-        start: function() {
-            window.addEventListener("keydown", function(e) {
-                elements.snake.direction = JoyPad.directions[e.keyIdentifier];
-            });
-        },
-
-        stop: function() {
-            window.removeEventListener("keydown");
-            window.removeEventListener("keyup");
-        }
-    }
-
+   
     function SnakeGame() {
 
         var self = this;
@@ -146,7 +172,7 @@ var app = (function() {
             map.addElementRandomPosition(snake);
             map.addElementRandomPosition(apple);
             
-            JoyPad.start();
+            JoyPad.startControll(snake);
             snake.direction = JoyPad.directions.Down;
 
             snakeWalk();
@@ -289,36 +315,7 @@ var app = (function() {
 
     }
 
-    function Matrix(rows, cols) {
-            
-        var matrix = new Array();
-        
-        for (var row = 0; row < rows; row++) {
-            
-            matrix[row] = new Array();
-        }
-
-        matrix.rows = rows;
-        matrix.cols = cols;
-
-        matrix.getRandomPosition = function() {
-            return {
-                row: Math.floor((Math.random() * (this.rows-2) )+1),
-                col: Math.floor((Math.random()*  (this.cols-2) )+1)
-            };
-        }
-
-        matrix.forEach = function(callback) {
-            for (var row = 0; row < this.rows; row++) {
-                for (var col = 0; col < this.cols; col++) {
-                    callback(row, col);
-                };
-            };
-        }
-
-        return matrix;
-    }
-
+    
     var notify = (function() {
         var notify;
         function create(message) {
@@ -361,6 +358,43 @@ var app = (function() {
             hidde:hidde
         }
     })();
+
+
+    /*
+    REFACTOR
+    */
+
+   
+    /* Matrix class */
+    function Matrix(rows, cols) {
+            
+        var matrix = new Array();
+        
+        for (var row = 0; row < rows; row++) {
+            
+            matrix[row] = new Array();
+        }
+
+        matrix.rows = rows;
+        matrix.cols = cols;
+
+        matrix.getRandomPosition = function() {
+            return {
+                row: Math.floor((Math.random() * (this.rows-2) )+1),
+                col: Math.floor((Math.random() * (this.cols-2) )+1)
+            };
+        }
+
+        matrix.forEach = function(callback) {
+            for (var row = 0; row < this.rows; row++) {
+                for (var col = 0; col < this.cols; col++) {
+                    callback(row, col);
+                };
+            };
+        }
+
+        return matrix;
+    }
 
     return {
         load:load,
