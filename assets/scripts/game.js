@@ -42,9 +42,12 @@ Engine.modules.JoyPad = (function(){
             }
     };
     
+    var key = {};
+
     function start(element) {
         window.addEventListener("keydown", function(e) {
-            element.direction = directions[e.keyIdentifier];
+
+            element.direction = directions[e.keyIdentifier] || element.direction;
         });
     }
     
@@ -93,10 +96,17 @@ Engine.modules.Matrix = (function() {
         }
 
         matrix.getRandomPosition = function() {
-            return {
-                row: Math.floor((Math.random() * (this.rows-2) )+1),
-                col: Math.floor((Math.random() * (this.cols-2) )+1)
-            };
+            
+            var row, col;
+            
+            do {    
+            
+                row = Math.floor((Math.random() * (this.rows-2) )+1),
+                col = Math.floor((Math.random() * (this.cols-2) )+1)
+            
+            } while(matrix[row][col]);
+
+            return {row:row, col:col};
         }
 
         matrix.getPosition= function(element) {
@@ -252,6 +262,10 @@ var Game = (function() {
                 this.delay = delay || 500;
                 this.trail = [];
                 this.direction = direction || {x:0, y:0};
+            }
+
+            this.onColision = function() {
+                snakeGame.gameOver();
             }
 
             this.walk = function() {
