@@ -41,16 +41,20 @@ Engine.modules.JoyPad = (function(){
                 y:1
             }
     };
-    
-    var key = {};
 
     function start(element) {
         window.addEventListener("keydown", function(e) {
+            
+            var direction = directions[e.keyIdentifier];
 
-            element.direction = directions[e.keyIdentifier] || element.direction;
+            if(!direction) return;
+            if((Math.abs(element.direction.x) + Math.abs(direction.x)) > 1) return;
+            if((Math.abs(element.direction.y) + Math.abs(direction.y)) > 1) return;
+
+            element.direction = direction;
         });
     }
-    
+
     function stop() {
         window.removeEventListener("keydown");
         window.removeEventListener("keyup");
@@ -95,7 +99,7 @@ Engine.modules.Matrix = (function() {
             };
         }
 
-        matrix.getRandomPosition = function() {
+        matrix.getRandomEmptyPosition = function() {
             
             var row, col;
             
@@ -363,7 +367,7 @@ var Game = (function() {
             }
 
             this.addElementRandomPosition = function(element) {
-                var randomPosition = mtx.getRandomPosition();
+                var randomPosition = mtx.getRandomEmptyPosition();
                 self.addElement(element, randomPosition);
             }
 
