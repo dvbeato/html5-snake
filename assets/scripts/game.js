@@ -42,14 +42,27 @@ Engine.modules.JoyPad = (function(){
             }
     };
 
+    function getRandomDirection() {
+
+        var result;
+        var count = 0;
+
+        for (var dir in directions)
+            if (Math.random() < 1/++count)
+               result = dir;
+
+        return directions[result];
+
+    }
+
     function start(element) {
         window.addEventListener("keydown", function(e) {
             
             var direction = directions[e.keyIdentifier];
 
-            if(!direction) return;
-            if((Math.abs(element.direction.x) + Math.abs(direction.x)) > 1) return;
-            if((Math.abs(element.direction.y) + Math.abs(direction.y)) > 1) return;
+            if(!direction) return; //invalid direction
+            if((Math.abs(element.direction.x) + Math.abs(direction.x)) > 1) return; //invalid reverse horizontal move
+            if((Math.abs(element.direction.y) + Math.abs(direction.y)) > 1) return; //invalid reverse vertical move
 
             element.direction = direction;
         });
@@ -63,7 +76,8 @@ Engine.modules.JoyPad = (function(){
     return {
         directions: directions,
         startControll:start, 
-        stop: stop
+        stop: stop,
+        getRandomDirection:getRandomDirection
     }
 })();
 
@@ -113,8 +127,15 @@ Engine.modules.Matrix = (function() {
             return {row:row, col:col};
         }
 
-        matrix.getPosition= function(element) {
+        matrix.getPosition = function(element) {
             return elementsPosition[element].position;
+        }
+
+        matrix.getMiddlePosition = function() {
+            return {
+                row:Math.floor(matrix.rows/2), 
+                col:Math.floor(matrix.cols/2)
+            };
         }
 
         matrix.addElement = function(element, position) {
@@ -223,10 +244,10 @@ var Game = (function() {
 
             gameState.status = RUNNING;
 
-            map.addElementRandomPosition(snake);
+            map.addElementCenterMap(snake);
             map.addElementRandomPosition(apple);
             
-            snake.init(joypad.directions.Down, START_DELAY);
+            snake.init(joypad.getRandomDirection(), START_DELAY);
 
             snake.walk();
         }
@@ -369,6 +390,11 @@ var Game = (function() {
             this.addElementRandomPosition = function(element) {
                 var randomPosition = mtx.getRandomEmptyPosition();
                 self.addElement(element, randomPosition);
+            }
+
+            this.addElementCenterMap = function(element) {
+                var middlePosition = mtx.getMiddlePosition();
+                self.addElement(element, middlePosition);
             }
 
             this.clearPosition = function(row, col) {
