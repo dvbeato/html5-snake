@@ -174,19 +174,19 @@ var Game = (function() {
 
             startButton.style.webkitAnimationDuration="0.2s";
             startButton.style.MozAnimationDuration="0.2s";
-            //startButton.style.animationDuration="0.2s";
+            startButton.style.animationDuration="0.2s";
 
             var menu = document.getElementById('menu');
             
             menu.style.webkitAnimationPlayState="running";
             menu.style.MozAnimationPlayState="running";
-           // menu.style.animationPlayState="running";
+            menu.style.animationPlayState="running";
            
             setTimeout(function() {
                 
                 startButton.style.webkitAnimationPlayState = "paused";
                 startButton.style.MozAnimationPlayState = "paused";
-             //   startButton.style.animationPlayState = "paused";
+                startButton.style.animationPlayState = "paused";
                 
                 snakeGame.startGame();
 
