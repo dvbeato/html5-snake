@@ -159,6 +159,9 @@ var Game = (function() {
     
     var joypad = Engine.modules.JoyPad;
 
+    var ROWS = 25,
+        COLS = 25;
+
     var WIDTH  = 500,
         HEIGHT = 500;
 
