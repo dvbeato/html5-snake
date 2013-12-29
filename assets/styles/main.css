@@ -6,6 +6,7 @@
 
 html {
 	box-sizing: border-box;
+	-moz-box-sizing:border-box;
 	width: 100%;
 	height: 100%;
 	font-size: 1.5em;
@@ -50,6 +51,42 @@ h1 {
 	}
 }
 
+@-moz-keyframes changeColor {
+	0% {
+		color: #FFF;
+	}
+	50% {
+		color: #555;
+	}
+	100% {
+		color: #FFF;
+	}
+}
+
+@-o-keyframes changeColor {
+	0% {
+		color: #FFF;
+	}
+	50% {
+		color: #555;
+	}
+	100% {
+		color: #FFF;
+	}
+}
+
+@keyframes changeColor {
+	0% {
+		color: #FFF;
+	}
+	50% {
+		color: #555;
+	}
+	100% {
+		color: #FFF;
+	}
+}
+
 @-webkit-keyframes tvOff {
 
 	40% {
@@ -62,29 +99,119 @@ h1 {
 	}
 }
 
+@-moz-keyframes tvOff {
+
+	40% {
+		transform: scale(1,0.1);
+		-moz-transform: scale(1,0.1);
+		background: rgba(1,1,1,0.3);
+	}
+	100% {
+		transform: scale(0,0);
+		-moz-transform: scale(0,0);
+		display: none;
+	}
+}
+
+@-o-keyframes tvOff {
+
+	40% {
+		-o-transform: scale(1,0.1);
+		background: rgba(1,1,1,0.3);
+	}
+	100% {
+		-o-transform: scale(0,0);
+		display: none;
+	}
+}
+
+@keyframes tvOff {
+
+	40% {
+		transform: scale(1,0.1);
+		background: rgba(1,1,1,0.3);
+	}
+	100% {
+		transform: scale(0,0);
+		display: none;
+	}
+}
+
+
+
 #menu {
 	position: absolute;
 	width: 100%;
 	text-align: center;
+	-moz-box-sizing:border-box;
 	box-sizing: border-box;
 	display: block;
 	top: 300px;
 	background: rgba(0,0,0,0.1);
 	padding: 10px 0px;
 	overflow: hidden;
-	-webkit-animation: tvOff 0.3s linear 1s paused;
+
+-webkit-animation-name:tvOff;
+	   -moz-animation-name:tvOff;
+		 -o-animation-name:tvOff;
+			animation-name:tvOff;
+
+	-webkit-animation-duration: 0.3s;
+	   -moz-animation-duration: 0.3s;
+		 -o-animation-duration: 0.3s;
+			animation-duration: 0.3s;
+	
+
+	-webkit-animation-timing-function: linear;
+	   -moz-animation-timing-function: linear;
+		 -o-animation-timing-function: linear;
+		    animation-timing-function: linear;
+	
+	-webkit-animation-delay:1s; 
+	   -moz-animation-delay:1s;
+		 -o-animation-delay:1s;
+			animation-delay:1s;
+
+	-webkit-animation-play-state:paused; 
+	   -moz-animation-play-state:paused;
+		 -o-animation-play-state:paused;
+			animation-play-state:paused;
 	
 	-webkit-animation-fill-mode: forwards;
+	   -moz-animation-fill-mode: forwards;
+	     -o-animation-fill-mode: forwards;
+	        animation-fill-mode: forwards;
 }
 
 #menu a {
 	color: #FFF;
 	text-decoration: none;
-	-webkit-animation-name: changeColor;
+
+	-webkit-animation-name:changeColor;
+	   -moz-animation-name:changeColor;
+		 -o-animation-name:changeColor;
+			animation-name:changeColor;
+
 	-webkit-animation-duration: 1s;
+	   -moz-animation-duration: 1s;
+		 -o-animation-duration: 1s;
+			animation-duration: 1s;
+	
+
 	-webkit-animation-timing-function: ease;
+	   -moz-animation-timing-function: ease;
+		 -o-animation-timing-function: ease;
+		    animation-timing-function: ease;
+	
 	-webkit-animation-play-state:running; 
-	-webkit-animation-iteration-count: infinite;
+	   -moz-animation-play-state:running;
+		 -o-animation-play-state:running;
+			animation-play-state:running;
+
+	-webkit-animation-iteration-count:infinite;
+	   -moz-animation-iteration-count:infinite;
+	     -o-animation-iteration-count:infinite;
+	        animation-iteration-count:infinite;
 }
 
 #notify {
@@ -94,6 +221,7 @@ h1 {
 	background: #d1d1d1;
 	border: 15px double #555;
 	margin: 0px -250px;
+	-moz-box-sizing:border-box;
 	box-sizing: border-box;
 	left: 50%;
 	top: 200px;

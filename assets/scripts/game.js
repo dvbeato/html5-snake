@@ -23,6 +23,7 @@ Engine.modules.Render = (function(){
 })();
 
 Engine.modules.JoyPad = (function(){
+
    var directions = {
             Right:{
                 x:1,
@@ -41,6 +42,8 @@ Engine.modules.JoyPad = (function(){
                 y:1
             }
     };
+    
+    var keyListener;
 
     function getRandomDirection() {
 
@@ -55,28 +58,26 @@ Engine.modules.JoyPad = (function(){
 
     }
 
-    function start(element) {
-        window.addEventListener("keydown", function(e) {
-            
-            var direction = directions[e.keyIdentifier];
+    var listener = function(e) {
+        
+        if(!keyListener) return;
+        
+        var key = e.keyIdentifier || e.key;
+        var direction = directions[key];
 
-            if(!direction) return; //invalid direction
-            if((Math.abs(element.direction.x) + Math.abs(direction.x)) > 1) return; //invalid reverse horizontal move
-            if((Math.abs(element.direction.y) + Math.abs(direction.y)) > 1) return; //invalid reverse vertical move
-
-            element.direction = direction;
-        });
+        if(!direction) return; //invalid direction
+        
+        keyListener(direction);
     }
 
-    function stop() {
-        window.removeEventListener("keydown");
-        window.removeEventListener("keyup");
+    function init(callback) {
+        keyListener = callback;
+        window.addEventListener("keydown", listener, false);
     }
     
     return {
         directions: directions,
-        startControll:start, 
-        stop: stop,
+        init:init, 
         getRandomDirection:getRandomDirection
     }
 })();
@@ -172,15 +173,21 @@ var Game = (function() {
         startButton.onclick = function() {
 
             startButton.style.webkitAnimationDuration="0.2s";
-            
+            startButton.style.MozAnimationDuration="0.2s";
+            //startButton.style.animationDuration="0.2s";
+
             var menu = document.getElementById('menu');
             
             menu.style.webkitAnimationPlayState="running";
-            
+            menu.style.MozAnimationPlayState="running";
+           // menu.style.animationPlayState="running";
+           
             setTimeout(function() {
                 
                 startButton.style.webkitAnimationPlayState = "paused";
-
+                startButton.style.MozAnimationPlayState = "paused";
+             //   startButton.style.animationPlayState = "paused";
+                
                 snakeGame.startGame();
 
             }, 1000);
@@ -237,7 +244,7 @@ var Game = (function() {
         this.init = function() {
             loadElements();
             map.init();
-            joypad.startControll(snake);
+            joypad.init(snake.controll);
         }
 
         this.startGame = function() {
@@ -261,7 +268,6 @@ var Game = (function() {
 
         this.gameOver = function() {
             gameState.status = STOPED;
-            joypad.stop();
             notify.show("Your Score: " + gameState.score);
         }
 
@@ -291,6 +297,14 @@ var Game = (function() {
 
             this.onColision = function() {
                 snakeGame.gameOver();
+            }
+
+            this.controll = function(direction) {
+
+                if((Math.abs(self.direction.x) + Math.abs(direction.x)) > 1) return; //invalid reverse horizontal move
+                if((Math.abs(self.direction.y) + Math.abs(direction.y)) > 1) return; //invalid reverse vertical move
+
+                self.direction = direction;
             }
 
             this.walk = function() {
