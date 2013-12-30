@@ -25,6 +25,10 @@ body {
 	text-align: center;
 }
 
+#gameview h1, #gameview #placar {
+	padding:20px 0px;
+}
+
 h1 {
 	font-weight: lighter;
 }
