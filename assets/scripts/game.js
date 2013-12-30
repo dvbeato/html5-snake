@@ -222,7 +222,7 @@ var Game = (function() {
             }
         }
         
-        var map   = new GameMap(WIDTH, HEIGHT);
+        var map   = new GameMap(ROWS, COLS);
         var snake = new Snake();
 
         var apple = {
@@ -343,18 +343,38 @@ var Game = (function() {
         }
 
 
-        function GameMap(width, height) {
+        function GameMap(rows, cols) {
         
             var matrix = Engine.modules.Matrix
                ,render = Engine.modules.Render;
 
             var self = this;
             
-            var height = height
-               ,width  = width;
+            var size = getSize();
+
+            var height = size
+               ,width  = size;
+
+
+            function getSize() {
+                var gameview = document.querySelector("#gameview");
+
+                var children = gameview.children;
+                var length = children.length;
+                
+                var childrenSize = 0;
+                var child;
+                for (var i = 0; i < length; i++) {
+                    child = children[i];
+                    if(child.tagName.toLowerCase() == "canvas") continue;
+                    childrenSize += child.clientHeight;
+                };
+
+                return (window.innerHeight - childrenSize);
+            }   
 
             var tile = {
-                size: 20,
+                size: size/rows,
                 borderSize: 1,
                 borderColor: "#aaa",
                 color:"#D1D1D1",
@@ -383,10 +403,7 @@ var Game = (function() {
             var mtx;
 
             this.init = function() {
-                mtx = matrix.create(
-                    (height / tile.size) //rows 
-                   ,(width / tile.size ) //cols
-                );
+                mtx = matrix.create(rows, cols);
                 populateMatrix();
                 self.draw();
             }
