@@ -1,0 +1,97 @@
+@import 'animations';
+
+* {
+  margin:0px;
+  border:0px;
+  padding: 0px;
+}
+
+html {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  font-size: 1.5em;
+  font-family: 'Press Start 2P', cursive, arial;
+}
+
+body {
+  background: #D1D1D1;
+  color: #555;
+    line-height: 1;
+}
+
+#gameview {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+}
+
+#gameview h1, #gameview #placar {
+  padding:20px 0px;
+}
+
+h1 {
+  font-weight: lighter;
+}
+
+#menu {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  display: block;
+  top: 30%;
+  background: rgba(0,0,0,0.1);
+  padding: 20px 0px;
+  overflow: hidden;
+}
+
+#menu p {
+  font-size: 0.5em;
+  padding-top: 10px;
+}
+
+#menu a {
+  color: #FFF;
+  text-decoration: none;
+}
+
+#notify {
+  position: absolute;
+  width: 500px;
+  display: none;
+  background: #d1d1d1;
+  border: 15px double #555;
+  margin: 0px -250px;
+  box-sizing: border-box;
+  left: 50%;
+  top: 200px;
+  z-index: 100;
+  padding: 10px;
+  text-align: center;
+}
+
+#notify button {
+  border: 3px solid #515151;
+  padding: 5px 10px;
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.tv-effect {
+  animation-name:tvOff;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-delay:1s;
+  animation-play-state:paused;
+  animation-fill-mode: forwards;
+}
+
+.blink-text {
+  animation-name:changeColor;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-play-state:running;
+  animation-iteration-count:infinite;
+}

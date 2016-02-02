@@ -1,74 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-  	<meta charset="utf-8">
-	<title>Snake - Diogo Vecchiati</title>
-	<meta name="author" content="Diogo Vecchiati">
-	<meta name="description" content="HTML5 Snake Minigame">
-
-	<meta name="keywords" content="
-	diogo vecchiati, diogo vecchiati beato, direx, javascript, java, html5, snake, minigame, divecch">
-
-	<meta name="HandheldFriendly" content="True">
-  	<meta name="MobileOptimized" content="320">
-  	<meta name="viewport" content="width=device-width, initial-scale=1">
-  	
-  	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
-
-  	<link rel="canonical" href="http://divecch.com/labs/snake">
-  	<link rel="stylesheet" type="text/css" href="assets/styles/main.css">
-  	<meta property="og:title" content="HTML5 Snake"/>
-	<meta property="og:type" content="game"/>
-	<meta property="og:url" content="http://diogobeato.com/labs/snake"/>
-	<meta property="og:image" content="assets/images/tumb.png"/>
-	<meta property="og:site_name" content="diogobeato"/>
-	<meta property="og:description" content="mini game snake made with html5 canvas"/>
-</head>
-<body>
-	<div id="fb-root"></div>
-
-	<div id="notify">
-		<div id="social">
-		<div class="fb-like" data-href="http://divecch.com/labs/snake" data-width="450" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
-		<div class="fb-comments" data-href="http://divecch.com/labs/snake" data-numposts="5" data-colorscheme="light" data-width="450"></div>
-		</div>
-	</div>
-
-	<div id="menu" class="tv-effect">
-		<a href="#" id="startgame" class="blink-text">Start Game</a>
-		<p>Use arrow keys to control the snake</p>
-	</div>
-	
-	<div id="gameview">
-		<h1>Snake</h1>
-		<canvas id="gamerender"></canvas>
-		<div id="placar">
-				<h4>score:<span id="score">0</span></h4>
-			<div id="ranking">
-			</div>			
-		</div>
-	</div>
-	
-	<script type="text/javascript" src="assets/scripts/game.js"></script>
-	<script>
-		(function(d, s, id) {
-		  var js, fjs = d.getElementsByTagName(s)[0];
-		  if (d.getElementById(id)) return;
-		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1&appId=656586814367245";
-		  fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-	</script>
-	
-	<a href="http://diogobeato.com" 
-		style="position: absolute; top: 0; left: 0; border: 0;
-		text-decoration:none; padding:10px;font-family: 'Helvetica Neue',Arial,sans-serif;
-		font-weight: normal; text-align:center; color:#313131;line-height: 1.2em;">
-		<span>{{ HTML5_SNAKE }}</span>
-		<p style="font-size:0.7em">diogobeato.com</p>
-	</a>
-
-	<a href="https://github.com/diogobeato/html5-snake"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-	
-</body>
-</html>
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Snake - Diogo Vecchiati</title><meta name="author" content="Diogo Beato"><meta name="description" content="HTML5 Snake Minigame"><meta name="keywords" content="
+  diogo vecchiati, diogo beato, diogo vecchiati beato, direx, javascript, html5, snake, minigame, divecch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="http://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" type="text/css"><link rel="canonical" href="http://dvbeato.github.io/html5-snake/"><link rel="stylesheet" type="text/css" href="assets/styles/main.css"><meta property="og:title" content="HTML5 Snake"><meta property="og:type" content="game"><meta property="og:url" content="http://dvbeato.github.io/html5-snake/"><meta property="og:image" content="./screenshot/tumb.png"><meta property="og:site_name" content="dvbeato.github.io"><meta property="og:description" content="mini game snake made with html5 canvas"></head><body><div id="fb-root"></div><div id="notify"><div id="social"><div class="fb-like" data-href="http://dvbeato.github.io/html5-snake/" data-width="450" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div><div class="fb-comments" data-href="http://dvbeato.github.io/html5-snake/" data-numposts="5" data-colorscheme="light" data-width="450"></div></div></div><div id="menu" class="tv-effect"><a href="#" id="startgame" class="blink-text">Start Game</a><p>Use arrow keys to control the snake</p></div><div id="gameview"><h1>Snake</h1><canvas id="gamerender"></canvas><div id="placar"><h4>score:<span id="score">0</span></h4><div id="ranking"></div></div></div><script type="text/javascript" src="assets/scripts/game.js"></script><script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1&appId=656586814367245";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script><a href="http://dvbeato.github.io" style="position: absolute; top: 0; left: 0; border: 0;
+    text-decoration:none; padding:10px;font-family: 'Helvetica Neue',Arial,sans-serif;
+    font-weight: normal; text-align:center; color:#313131;line-height: 1.2em"><span>{{ HTML5_SNAKE }}</span><p style="font-size:0.7em">dvbeato.github.io</p></a> <a href="https://github.com/dvbeato/html5-snake"><img style="position: absolute; top: 0; right: 0; border: 0" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a></body></html>

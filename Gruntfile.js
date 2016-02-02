@@ -1,81 +1,111 @@
-/*global module:false*/
 module.exports = function(grunt) {
 
-  // Project configuration.
+  require('load-grunt-tasks')(grunt);
+
   grunt.initConfig({
-    // Metadata.
     pkg: grunt.file.readJSON('package.json'),
-    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-      ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
-    // Task configuration.
-    concat: {
+    assets: {
+      dir: 'assets',
+      path: '<%= pkg.directories.src %>/<%= assets.dir %>',
+      styles: {
+        dir: 'styles',
+        path: '<%= assets.path %>/<%= assets.styles.dir %>',
+        files: '<%= assets.styles.path %>/**/*.sass'
+      },
+      scripts: {
+        dir: 'scripts',
+        path: '<%= assets.path %>/<%= assets.scripts.dir %>',
+        files: '<%= assets.scripts.path %>/**/*.js'
+      },
+      html: {
+        dir:'.',
+        path: '<%= pkg.directories.src %>/<%= assets.html.dir %>',
+        files: '<%= assets.html.path %>/**/*.html'
+      }
+    },
+    sass: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= assets.styles.path %>/sass',
+          src: ['*.scss'],
+          dest: '<%= assets.styles.path %>',
+          ext: '.css'
+        }]
+      }
+    },
+    postcss: {
       options: {
-        banner: '<%= banner %>',
-        stripBanners: true
+        map: true,
+        processors: [
+          // require('pixrem')(),
+          require('autoprefixer')({browsers: 'last 2 versions'}),
+          require('cssnano')()
+        ]
       },
       dist: {
-        src: ['lib/<%= pkg.name %>.js'],
-        dest: 'dist/<%= pkg.name %>.js'
+        src:  '<%= assets.styles.path %>/*.css'
       }
     },
-    uglify: {
-      options: {
-        banner: '<%= banner %>'
-      },
+    htmlmin: {
       dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/<%= pkg.name %>.min.js'
+        options: {
+          removeComments: true,
+          collapseWhitespace: true
+        },
+        files: {
+          'index.html': '<%= assets.html.path %>/index.html'
+        }
       }
     },
-    jshint: {
-      options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        unused: true,
-        boss: true,
-        eqnull: true,
-        browser: true,
-        globals: {}
-      },
-      gruntfile: {
-        src: 'Gruntfile.js'
-      },
-      lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
+    copy: {
+      main: {
+        files: [
+          {
+            expand: true,
+            cwd:'<%= pkg.directories.src %>',
+            src: [
+              '<%= assets.dir %>/**',
+              '!**/sass/**'
+            ],
+            dest: './'
+          }
+        ]
       }
-    },
-    qunit: {
-      files: ['test/**/*.html']
     },
     watch: {
-      gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
+      // scripts: {
+      //   files: ['**/*.js'],
+      //   tasks: []
+      // },
+      html: {
+        files: ['<%= assets.html.dir %>/index.html'],
+        task: ['htmlmin']
       },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'qunit']
+      css: {
+        files: '<%= assets.styles.dir %>/sass/**/*.scss',
+        tasks: ['css_compile'],
+      }
+    },
+    browserSync: {
+      dev: {
+        bsFiles: {
+          src : [
+            '<%= assets.styles.dir %>/**/*.css',
+            '<%= assets.scripts.dir %>/**/*.js',
+            '<%= assets.html.dir %>/index.html'
+          ]
+        },
+        options: {
+          watchTask: true,
+          server: '<%= pkg.directories.src %>'
+        }
       }
     }
   });
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-
-  // Default task.
-  grunt.registerTask('default', ['jshint', 'qunit', 'concat', 'uglify']);
-
+  grunt.registerTask('css_compile', ['sass', 'postcss']);
+  grunt.registerTask('build', ['css_compile', 'htmlmin']);
+  grunt.registerTask('default', ['build', 'browserSync', 'watch']);
+  grunt.registerTask('dist', ['build', 'copy'])
 };

@@ -1,0 +1,23 @@
+@keyframes changeColor {
+  0% {
+    color: #FFF;
+  }
+  50% {
+    color: #555;
+  }
+  100% {
+    color: #FFF;
+  }
+}
+
+@keyframes tvOff {
+
+  40% {
+    transform: scale(1,0.1);
+    background: rgba(1,1,1,0.3);
+  }
+  100% {
+    transform: scale(0,0);
+    display: none;
+  }
+}
